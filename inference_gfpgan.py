@@ -3,7 +3,9 @@ import cv2
 import glob
 import numpy as np
 import os
+import shutil
 import torch
+from tqdm import tqdm
 from basicsr.utils import imwrite
 
 from gfpgan import GFPGANer
@@ -47,12 +49,24 @@ def main():
     args = parser.parse_args()
 
     # ------------------------ input & output ------------------------
-    if args.input.endswith('/'):
-        args.input = args.input[:-1]
-    if os.path.isfile(args.input):
-        img_list = [args.input]
+    if args.input.endswith(('mp4', 'mov', 'avi', 'MP4', 'MOV', 'AVI')):
+        frame_path = os.path.join(args.output, "frame")
+        shutil.rmtree(frame_path, ignore_errors=True)
+        os.makedirs(frame_path, exist_ok=True)
+
+        args.output = os.path.join(args.output, os.path.basename(args.input).split('.')[0])
+        shutil.rmtree(args.output, ignore_errors=True)
+
+        os.system(f"ffmpeg -i {args.input} -qscale:v 1 -qmin 1 -qmax 1 -vsync 0  {frame_path}/frame_%d.png")
     else:
-        img_list = sorted(glob.glob(os.path.join(args.input, '*')))
+        if args.input.endswith('/'):
+            # args.input = args.input[:-1]
+            frame_path = args.input[:-1]
+
+    if os.path.isfile(frame_path):
+        img_list = [frame_path]
+    else:
+        img_list = sorted(glob.glob(os.path.join(frame_path, '*')))
 
     os.makedirs(args.output, exist_ok=True)
 
@@ -64,6 +78,7 @@ def main():
                           'If you really want to use it, please modify the corresponding codes.')
             bg_upsampler = None
         else:
+            print("CUDA")
             from basicsr.archs.rrdbnet_arch import RRDBNet
             from realesrgan import RealESRGANer
             model = RRDBNet(num_in_ch=3, num_out_ch=3, num_feat=64, num_block=23, num_grow_ch=32, scale=2)
@@ -123,7 +138,7 @@ def main():
         bg_upsampler=bg_upsampler)
 
     # ------------------------ restore ------------------------
-    for img_path in img_list:
+    for img_path in tqdm(img_list):
         # read image
         img_name = os.path.basename(img_path)
         print(f'Processing {img_name} ...')
@@ -172,3 +187,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# python inference_gfpgan.py -i E:/FaceSwap/Code/RoopSwap/testImages/HR-output/dilireba1-xia3.mp4 -o results -v 1.3 -s 2

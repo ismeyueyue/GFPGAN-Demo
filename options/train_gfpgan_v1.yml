@@ -1,7 +1,7 @@
 # general settings
 name: train_GFPGANv1_512
 model_type: GFPGANModel
-num_gpu: auto  # officially, we use 4 GPUs
+num_gpu: auto # officially, we use 4 GPUs
 manual_seed: 0
 
 # dataset and data loader settings
@@ -21,7 +21,7 @@ datasets:
     out_size: 512
 
     blur_kernel_size: 41
-    kernel_list: ['iso', 'aniso']
+    kernel_list: ["iso", "aniso"]
     kernel_prob: [0.5, 0.5]
     blur_sigma: [0.1, 10]
     downsample_range: [0.8, 8]
@@ -113,7 +113,7 @@ path:
   pretrain_network_identity: experiments/pretrained_models/arcface_resnet18.pth
   # resume
   resume_state: ~
-  ignore_resume_networks: ['network_identity']
+  ignore_resume_networks: ["network_identity"]
 
 # training settings
 train:
@@ -133,7 +133,7 @@ train:
     gamma: 0.5
 
   total_iter: 800000
-  warmup_iter: -1  # no warm up
+  warmup_iter: -1 # no warm up
 
   # losses
   # pixel loss
@@ -155,11 +155,11 @@ train:
     type: PerceptualLoss
     layer_weights:
       # before relu
-      'conv1_2': 0.1
-      'conv2_2': 0.1
-      'conv3_4': 1
-      'conv4_4': 1
-      'conv5_4': 1
+      "conv1_2": 0.1
+      "conv2_2": 0.1
+      "conv3_4": 1
+      "conv4_4": 1
+      "conv5_4": 1
     vgg_type: vgg19
     use_input_norm: true
     perceptual_weight: !!float 1
@@ -214,3 +214,4 @@ dist_params:
   port: 29500
 
 find_unused_parameters: true
+# python gfpgan/train.py -opt options/train_gfpgan_v1.yml --launcher pytorch
