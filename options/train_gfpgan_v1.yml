@@ -215,3 +215,4 @@ dist_params:
 
 find_unused_parameters: true
 # python gfpgan/train.py -opt options/train_gfpgan_v1.yml --launcher pytorch
+# python gfpgan/train.py -opt options/train_gfpgan_v1.yml --launcher pytorch

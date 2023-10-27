@@ -1,4 +1,7 @@
 # flake8: noqa
+import os
+os.environ['RANK'] = str(0)
+
 import os.path as osp
 from basicsr.train import train_pipeline
 
