@@ -11,7 +11,7 @@ from basicsr.utils.registry import DATASET_REGISTRY
 
 
 @DATASET_REGISTRY.register()
-class MyVgg2SwapefaceDataset(data.Dataset):
+class Vgg2PairfaceDataset(data.Dataset):
     """Example dataset.
 
     1. Read GT image
@@ -32,7 +32,7 @@ class MyVgg2SwapefaceDataset(data.Dataset):
     """
 
     def __init__(self, opt):
-        super(MyVgg2SwapefaceDataset, self).__init__()
+        super(Vgg2PairfaceDataset, self).__init__()
         self.opt = opt
         # file client (io backend)
         self.file_client = None
@@ -84,7 +84,8 @@ class MyVgg2SwapefaceDataset(data.Dataset):
             normalize(img_lq, self.mean, self.std, inplace=True)
             normalize(img_gt, self.mean, self.std, inplace=True)
 
-        return {'lq': img_lq, 'gt': img_gt, 'lq_path': gt_path, 'gt_path': gt_path}
+        # return {'lq': img_lq, 'gt': img_gt, 'lq_path': gt_path, 'gt_path': gt_path}
+        return {'lq': img_lq, 'gt': img_gt, 'gt_path': gt_path}
 
     def __len__(self):
         return len(self.paths)
