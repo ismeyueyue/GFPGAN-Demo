@@ -12,7 +12,6 @@ datasets:
     type: PairedImageDataset
     dataroot_lq: datasets/faces/train/input
     dataroot_gt: datasets/faces/train/reference
-    filename_tmpl: '{}x2'
     io_backend:
       type: disk
 
@@ -34,7 +33,6 @@ datasets:
     type: PairedImageDataset
     dataroot_lq: datasets/faces/validation/input
     dataroot_gt: datasets/faces/validation/reference
-    filename_tmpl: '{}x2'
     io_backend:
       type: disk
 
