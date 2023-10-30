@@ -200,8 +200,11 @@ class GFPGANModel(BaseModel):
 
     def feed_data(self, data):
         self.lq = data['lq'].to(self.device)
+        print(self.lq.shape)
+
         if 'gt' in data:
             self.gt = data['gt'].to(self.device)
+            print(self.lq.gt)
 
         if 'loc_left_eye' in data:
             # get facial component locations, shape (batch, 4)
