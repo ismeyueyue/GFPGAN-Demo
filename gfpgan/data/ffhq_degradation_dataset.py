@@ -213,6 +213,11 @@ class FFHQDegradationDataset(data.Dataset):
         normalize(img_gt, self.mean, self.std, inplace=True)
         normalize(img_lq, self.mean, self.std, inplace=True)
 
+        print("===============================")
+        print(img_gt.shape)
+        print(img_lq.shape)
+        print("===============================")
+
         if self.crop_components:
             return_dict = {
                 'lq': img_lq,
